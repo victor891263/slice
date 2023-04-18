@@ -25,7 +25,8 @@ export default function Links() {
 
     function setTimeLabel(time: string) {
         let timeLabel = 's';
-        let elapsedTime = getElapsedTime(time);
+        let elapsedTime = Math.floor(getElapsedTime(time));
+        if (elapsedTime < 1) elapsedTime = elapsedTime + 1;
         if (60 < elapsedTime && elapsedTime < 3600) {
             elapsedTime = Math.floor(elapsedTime / 60);
             timeLabel = 'min';
