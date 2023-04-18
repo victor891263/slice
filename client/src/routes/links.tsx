@@ -78,7 +78,7 @@ export default function Links() {
                 <div className="max-w-screen-lg w-full py-16 my-auto">
                     <h1 className="sm:text-3xl text-2xl text-center font-extrabold tracking-tight text-black dark:text-white">All shortened URLs</h1>
                     <Link to="/" className="sm:mt-1.5 mt-1 block w-fit mx-auto text-indigo-600 dark:text-indigo-400">Get started</Link>
-                    <div className="sm:mb-10 sm:mt-10 mb-4 mt-8 relative max-w-sm mx-auto">
+                    <div className="sm:mb-10 sm:mt-10 mb-4 mt-9 relative max-w-sm mx-auto">
                         <input onChange={e => setSearchKeyword(e.target.value)} value={searchKeyword} type="text" name="search" placeholder="What's your URL?" className="w-full shadow-sm rounded bg-transparent border border-gray-300 py-2.5 px-3.5 outline-0 focus:border-indigo-600 dark:border-gray-700 dark:focus:border-indigo-400 dark:placeholder:text-gray-600" />
                         <div className="absolute top-0 right-0 pr-2.5 h-full flex items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-gray-400 dark:text-gray-600">
@@ -91,7 +91,7 @@ export default function Links() {
                         <TableSkeleton />
                     ):(
                         errMsg ? (
-                            <div className="border rounded-lg border-gray-300 flex flex-col items-center justify-center px-5 mx-auto py-10 space-y-8 text-center dark:border-gray-700">
+                            <div className="border rounded border-gray-300 flex flex-col items-center justify-center px-5 mx-auto py-10 space-y-8 text-center dark:border-gray-700">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className="w-40 h-40 text-gray-400 dark:text-gray-600">
                                     <path fill="currentColor" d="M256,16C123.452,16,16,123.452,16,256S123.452,496,256,496,496,388.548,496,256,388.548,16,256,16ZM403.078,403.078a207.253,207.253,0,1,1,44.589-66.125A207.332,207.332,0,0,1,403.078,403.078Z"></path><rect width="176" height="32" x="168" y="320" fill="currentColor"></rect><polygon fill="currentColor" points="210.63 228.042 186.588 206.671 207.958 182.63 184.042 161.37 162.671 185.412 138.63 164.042 117.37 187.958 141.412 209.329 120.042 233.37 143.958 254.63 165.329 230.588 189.37 251.958 210.63 228.042"></polygon><polygon fill="currentColor" points="383.958 182.63 360.042 161.37 338.671 185.412 314.63 164.042 293.37 187.958 317.412 209.329 296.042 233.37 319.958 254.63 341.329 230.588 365.37 251.958 386.63 228.042 362.588 206.671 383.958 182.63"></polygon>
                                 </svg>
@@ -103,16 +103,16 @@ export default function Links() {
                                     <table className="min-w-full divide-y divide-gray-300 dark:divide-gray-700">
                                         <thead className="bg-gray-100 dark:bg-gray-800">
                                         <tr className="text-gray-500 text-sm">
-                                            <th className="whitespace-nowrap px-3.5 py-3 font-normal text-left">Full URL</th>
-                                            <th className="whitespace-nowrap px-3.5 py-3 font-normal text-left">Short URL</th>
-                                            <th className="whitespace-nowrap px-3.5 py-3 font-normal text-left">
+                                            <th className="whitespace-nowrap px-3.5 py-2.5 font-normal text-left">Full URL</th>
+                                            <th className="whitespace-nowrap px-3.5 py-2.5 font-normal text-left">Short URL</th>
+                                            <th className="whitespace-nowrap px-3.5 py-2.5 font-normal text-left">
                                                 <div className="flex items-center">
                                                     <span className="mr-0.5">Clicks</span>
                                                     <button onClick={() => setSortBy({ title: 'clicks', asc: true })}><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={"w-4 h-4" + ((sortBy.title === 'clicks' && sortBy.asc) ? " text-indigo-600 dark:text-indigo-400" : "")}><path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m0 0l6.75-6.75M12 19.5l-6.75-6.75" /></svg></button>
                                                     <button onClick={() => setSortBy({ title: 'clicks', asc: false })}><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={"w-4 h-4" + ((sortBy.title === 'clicks' && !sortBy.asc) ? " text-indigo-600 dark:text-indigo-400" : "")}><path strokeLinecap="round" strokeLinejoin="round" d="M12 19.5v-15m0 0l-6.75 6.75M12 4.5l6.75 6.75" /></svg></button>
                                                 </div>
                                             </th>
-                                            <th className="whitespace-nowrap px-3.5 py-3 font-normal text-left">
+                                            <th className="whitespace-nowrap px-3.5 py-2.5 font-normal text-left">
                                                 <div className="flex items-center">
                                                     <span className="mr-0.5">Created</span>
                                                     <button onClick={() => setSortBy({ title: 'createdOn', asc: true })}><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={"w-4 h-4" + ((sortBy.title === 'createdOn' && sortBy.asc) ? " text-indigo-600 dark:text-indigo-400" : "")}><path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m0 0l6.75-6.75M12 19.5l-6.75-6.75" /></svg></button>
@@ -138,7 +138,7 @@ export default function Links() {
                                     </table>
                                 </div>
                             ):(
-                                <div className="border rounded-lg border-gray-300 flex flex-col items-center justify-center px-5 mx-auto py-10 space-y-8 text-center dark:border-gray-700">
+                                <div className="border rounded border-gray-300 flex flex-col items-center justify-center px-5 mx-auto py-10 space-y-8 text-center dark:border-gray-700">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className="w-40 h-40 text-gray-400 dark:text-gray-600">
                                         <path fill="currentColor" d="M256,16C123.452,16,16,123.452,16,256S123.452,496,256,496,496,388.548,496,256,388.548,16,256,16ZM403.078,403.078a207.253,207.253,0,1,1,44.589-66.125A207.332,207.332,0,0,1,403.078,403.078Z"></path><rect width="176" height="32" x="168" y="320" fill="currentColor"></rect><polygon fill="currentColor" points="210.63 228.042 186.588 206.671 207.958 182.63 184.042 161.37 162.671 185.412 138.63 164.042 117.37 187.958 141.412 209.329 120.042 233.37 143.958 254.63 165.329 230.588 189.37 251.958 210.63 228.042"></polygon><polygon fill="currentColor" points="383.958 182.63 360.042 161.37 338.671 185.412 314.63 164.042 293.37 187.958 317.412 209.329 296.042 233.37 319.958 254.63 341.329 230.588 365.37 251.958 386.63 228.042 362.588 206.671 383.958 182.63"></polygon>
                                     </svg>
