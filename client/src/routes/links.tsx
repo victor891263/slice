@@ -124,10 +124,10 @@ export default function Links() {
                                         {sortedUrls.map((url, index) => (
                                             <tr className="" key={index}>
                                                 <td className="whitespace-nowrap px-4 py-3.5 text-indigo-600 dark:text-indigo-400">
-                                                    <a href={url.full} target="_blank">{url.full.length > 40 ? (url.full.slice(0, 40) + '...') : url.full}</a>
+                                                    <a href={url.full} target="_blank" rel="noreferrer">{url.full.length > 40 ? (url.full.slice(0, 40) + '...') : url.full}</a>
                                                 </td>
                                                 <td className="whitespace-nowrap px-4 py-3.5 text-indigo-600 dark:text-indigo-400">
-                                                    <a href={process.env.REACT_APP_API_ENDPOINT + url.short} target="_blank">{process.env.REACT_APP_API_ENDPOINT + url.short}</a>
+                                                    <a href={process.env.REACT_APP_API_ENDPOINT + url.short} target="_blank" rel="noreferrer">{process.env.REACT_APP_API_ENDPOINT + url.short}</a>
                                                 </td>
                                                 <td className="whitespace-nowrap px-4 py-3.5 font-bold">{url.clicks}</td>
                                                 <td className="whitespace-nowrap px-4 py-3.5">{setTimeLabel(url.createdOn)} ago</td>
