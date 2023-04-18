@@ -4,16 +4,23 @@ import axios from "axios";
 import {Url} from "../types";
 import {Link} from "react-router-dom";
 import ThemeButton from "../Components/ThemeButton";
+import TableSkeleton from "../Components/TableSkeleton";
+import handleError from "../functions/handleError";
 
 export default function Links() {
     const [urlList, setUrlList] = useState<Url[]>([]);
     const [searchKeyword, setSearchKeyword] = useState('');
     const [sortBy, setSortBy] = useState({ title: 'createdOn', asc: true });
 
+    const [isLoading, setIsLoading] = useState(false);
+    const [errMsg, setErrMsg] = useState('');
+
     useEffect(() => {
+        setIsLoading(true);
         axios.get(process.env.REACT_APP_API_ENDPOINT as string)
             .then(response => setUrlList(response.data))
-            .catch(error => console.log(error));
+            .catch(error => handleError(error, setErrMsg))
+            .finally(() => setIsLoading(false));
     }, []);
 
     function setTimeLabel(time: string) {
@@ -79,60 +86,65 @@ export default function Links() {
                         </div>
                     </div>
 
-                    {sortedUrls.length > 0 ? (
-                        <div className="overflow-x-auto rounded-md border border-gray-300 dark:border-gray-700">
-                            <table className="min-w-full divide-y divide-gray-300 dark:divide-gray-700">
-                                <thead className="bg-gray-100 dark:bg-gray-800">
-                                <tr className="text-gray-500 text-sm">
-                                    <th className="whitespace-nowrap px-4 py-3 font-normal text-left">Full URL</th>
-                                    <th className="whitespace-nowrap px-4 py-3 font-normal text-left">Short URL</th>
-                                    <th className="whitespace-nowrap px-4 py-3 font-normal text-left">
-                                        <div className="flex items-center">
-                                            <span className="mr-1">Clicks</span>
-                                            <button onClick={() => setSortBy({ title: 'clicks', asc: true })}>
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={"w-4 h-4" + ((sortBy.title === 'clicks' && sortBy.asc) ? " text-indigo-600 dark:text-indigo-400" : "")}><path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m0 0l6.75-6.75M12 19.5l-6.75-6.75" /></svg>
-                                            </button>
-                                            <button onClick={() => setSortBy({ title: 'clicks', asc: false })}>
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={"w-4 h-4" + ((sortBy.title === 'clicks' && !sortBy.asc) ? " text-indigo-600 dark:text-indigo-400" : "")}><path strokeLinecap="round" strokeLinejoin="round" d="M12 19.5v-15m0 0l-6.75 6.75M12 4.5l6.75 6.75" /></svg>
-                                            </button>
-                                        </div>
-                                    </th>
-                                    <th className="whitespace-nowrap px-4 py-3 font-normal text-left">
-                                        <div className="flex items-center">
-                                            <span className="mr-1">Created</span>
-                                            <button onClick={() => setSortBy({ title: 'createdOn', asc: true })}>
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={"w-4 h-4" + ((sortBy.title === 'createdOn' && sortBy.asc) ? " text-indigo-600 dark:text-indigo-400" : "")}><path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m0 0l6.75-6.75M12 19.5l-6.75-6.75" /></svg>
-                                            </button>
-                                            <button onClick={() => setSortBy({ title: 'createdOn', asc: false })}>
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={"w-4 h-4" + ((sortBy.title === 'createdOn' && !sortBy.asc) ? " text-indigo-600 dark:text-indigo-400" : "")}><path strokeLinecap="round" strokeLinejoin="round" d="M12 19.5v-15m0 0l-6.75 6.75M12 4.5l6.75 6.75" /></svg>
-                                            </button>
-                                        </div>
-                                    </th>
-                                </tr>
-                                </thead>
-                                <tbody className="divide-y divide-gray-300 dark:divide-gray-700">
-                                {sortedUrls.map((url, index) => (
-                                    <tr className="" key={index}>
-                                        <td className="whitespace-nowrap px-4 py-3.5 text-indigo-600 dark:text-indigo-400">
-                                            <a href={url.full} target="_blank">{url.full.length > 40 ? (url.full.slice(0, 40) + '...') : url.full}</a>
-                                        </td>
-                                        <td className="whitespace-nowrap px-4 py-3.5 text-indigo-600 dark:text-indigo-400">
-                                            <a href={process.env.REACT_APP_API_ENDPOINT + url.short} target="_blank">{process.env.REACT_APP_API_ENDPOINT + url.short}</a>
-                                        </td>
-                                        <td className="whitespace-nowrap px-4 py-3.5 font-bold">{url.clicks}</td>
-                                        <td className="whitespace-nowrap px-4 py-3.5">{setTimeLabel(url.createdOn)} ago</td>
-                                    </tr>
-                                ))}
-                                </tbody>
-                            </table>
-                        </div>
+                    {isLoading ? (
+                        <TableSkeleton />
                     ):(
-                        <div className="border rounded-lg border-gray-300 flex flex-col items-center justify-center px-5 mx-auto py-10 space-y-8 text-center dark:border-gray-700">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className="w-40 h-40 text-gray-400 dark:text-gray-600">
-                                <path fill="currentColor" d="M256,16C123.452,16,16,123.452,16,256S123.452,496,256,496,496,388.548,496,256,388.548,16,256,16ZM403.078,403.078a207.253,207.253,0,1,1,44.589-66.125A207.332,207.332,0,0,1,403.078,403.078Z"></path><rect width="176" height="32" x="168" y="320" fill="currentColor"></rect><polygon fill="currentColor" points="210.63 228.042 186.588 206.671 207.958 182.63 184.042 161.37 162.671 185.412 138.63 164.042 117.37 187.958 141.412 209.329 120.042 233.37 143.958 254.63 165.329 230.588 189.37 251.958 210.63 228.042"></polygon><polygon fill="currentColor" points="383.958 182.63 360.042 161.37 338.671 185.412 314.63 164.042 293.37 187.958 317.412 209.329 296.042 233.37 319.958 254.63 341.329 230.588 365.37 251.958 386.63 228.042 362.588 206.671 383.958 182.63"></polygon>
-                            </svg>
-                            <p className="text-3xl max-w-md">Looks like the URL you're trying to find doesn't exist.</p>
-                        </div>
+                        errMsg ? (
+                            <div className="border rounded-lg border-gray-300 flex flex-col items-center justify-center px-5 mx-auto py-10 space-y-8 text-center dark:border-gray-700">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className="w-40 h-40 text-gray-400 dark:text-gray-600">
+                                    <path fill="currentColor" d="M256,16C123.452,16,16,123.452,16,256S123.452,496,256,496,496,388.548,496,256,388.548,16,256,16ZM403.078,403.078a207.253,207.253,0,1,1,44.589-66.125A207.332,207.332,0,0,1,403.078,403.078Z"></path><rect width="176" height="32" x="168" y="320" fill="currentColor"></rect><polygon fill="currentColor" points="210.63 228.042 186.588 206.671 207.958 182.63 184.042 161.37 162.671 185.412 138.63 164.042 117.37 187.958 141.412 209.329 120.042 233.37 143.958 254.63 165.329 230.588 189.37 251.958 210.63 228.042"></polygon><polygon fill="currentColor" points="383.958 182.63 360.042 161.37 338.671 185.412 314.63 164.042 293.37 187.958 317.412 209.329 296.042 233.37 319.958 254.63 341.329 230.588 365.37 251.958 386.63 228.042 362.588 206.671 383.958 182.63"></polygon>
+                                </svg>
+                                <p className="text-3xl max-w-md">{errMsg}</p>
+                            </div>
+                        ):(
+                            sortedUrls.length > 0 ? (
+                                <div className="overflow-x-auto rounded-md border border-gray-300 dark:border-gray-700">
+                                    <table className="min-w-full divide-y divide-gray-300 dark:divide-gray-700">
+                                        <thead className="bg-gray-100 dark:bg-gray-800">
+                                        <tr className="text-gray-500 text-sm">
+                                            <th className="whitespace-nowrap px-4 py-3 font-normal text-left">Full URL</th>
+                                            <th className="whitespace-nowrap px-4 py-3 font-normal text-left">Short URL</th>
+                                            <th className="whitespace-nowrap px-4 py-3 font-normal text-left">
+                                                <div className="flex items-center">
+                                                    <span className="mr-1">Clicks</span>
+                                                    <button onClick={() => setSortBy({ title: 'clicks', asc: true })}><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={"w-4 h-4" + ((sortBy.title === 'clicks' && sortBy.asc) ? " text-indigo-600 dark:text-indigo-400" : "")}><path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m0 0l6.75-6.75M12 19.5l-6.75-6.75" /></svg></button>
+                                                    <button onClick={() => setSortBy({ title: 'clicks', asc: false })}><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={"w-4 h-4" + ((sortBy.title === 'clicks' && !sortBy.asc) ? " text-indigo-600 dark:text-indigo-400" : "")}><path strokeLinecap="round" strokeLinejoin="round" d="M12 19.5v-15m0 0l-6.75 6.75M12 4.5l6.75 6.75" /></svg></button>
+                                                </div>
+                                            </th>
+                                            <th className="whitespace-nowrap px-4 py-3 font-normal text-left">
+                                                <div className="flex items-center">
+                                                    <span className="mr-1">Created</span>
+                                                    <button onClick={() => setSortBy({ title: 'createdOn', asc: true })}><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={"w-4 h-4" + ((sortBy.title === 'createdOn' && sortBy.asc) ? " text-indigo-600 dark:text-indigo-400" : "")}><path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m0 0l6.75-6.75M12 19.5l-6.75-6.75" /></svg></button>
+                                                    <button onClick={() => setSortBy({ title: 'createdOn', asc: false })}><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={"w-4 h-4" + ((sortBy.title === 'createdOn' && !sortBy.asc) ? " text-indigo-600 dark:text-indigo-400" : "")}><path strokeLinecap="round" strokeLinejoin="round" d="M12 19.5v-15m0 0l-6.75 6.75M12 4.5l6.75 6.75" /></svg></button>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-gray-300 dark:divide-gray-700">
+                                        {sortedUrls.map((url, index) => (
+                                            <tr className="" key={index}>
+                                                <td className="whitespace-nowrap px-4 py-3.5 text-indigo-600 dark:text-indigo-400">
+                                                    <a href={url.full} target="_blank">{url.full.length > 40 ? (url.full.slice(0, 40) + '...') : url.full}</a>
+                                                </td>
+                                                <td className="whitespace-nowrap px-4 py-3.5 text-indigo-600 dark:text-indigo-400">
+                                                    <a href={process.env.REACT_APP_API_ENDPOINT + url.short} target="_blank">{process.env.REACT_APP_API_ENDPOINT + url.short}</a>
+                                                </td>
+                                                <td className="whitespace-nowrap px-4 py-3.5 font-bold">{url.clicks}</td>
+                                                <td className="whitespace-nowrap px-4 py-3.5">{setTimeLabel(url.createdOn)} ago</td>
+                                            </tr>
+                                        ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            ):(
+                                <div className="border rounded-lg border-gray-300 flex flex-col items-center justify-center px-5 mx-auto py-10 space-y-8 text-center dark:border-gray-700">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className="w-40 h-40 text-gray-400 dark:text-gray-600">
+                                        <path fill="currentColor" d="M256,16C123.452,16,16,123.452,16,256S123.452,496,256,496,496,388.548,496,256,388.548,16,256,16ZM403.078,403.078a207.253,207.253,0,1,1,44.589-66.125A207.332,207.332,0,0,1,403.078,403.078Z"></path><rect width="176" height="32" x="168" y="320" fill="currentColor"></rect><polygon fill="currentColor" points="210.63 228.042 186.588 206.671 207.958 182.63 184.042 161.37 162.671 185.412 138.63 164.042 117.37 187.958 141.412 209.329 120.042 233.37 143.958 254.63 165.329 230.588 189.37 251.958 210.63 228.042"></polygon><polygon fill="currentColor" points="383.958 182.63 360.042 161.37 338.671 185.412 314.63 164.042 293.37 187.958 317.412 209.329 296.042 233.37 319.958 254.63 341.329 230.588 365.37 251.958 386.63 228.042 362.588 206.671 383.958 182.63"></polygon>
+                                    </svg>
+                                    <p className="text-3xl max-w-md">Looks like the URL you're trying to find doesn't exist.</p>
+                                </div>
+                            )
+                        )
                     )}
 
                     <div className="mt-8 flex items-center justify-center gap-3">

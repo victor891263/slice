@@ -2,14 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import './index.css';
-import Home from './routes/home';
+import Root from './routes/root';
 import Links from './routes/links';
 import reportWebVitals from './reportWebVitals';
 
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <Home />,
+        element: <Root />,
     },
     {
         path: "/links",

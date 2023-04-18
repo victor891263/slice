@@ -1,19 +1,35 @@
 import React, {useState} from 'react';
 import {Helmet} from "react-helmet";
 import axios from "axios";
-import ThemeButton from "../Components/ThemeButton";
 import {Link} from "react-router-dom";
+import ThemeButton from "../Components/ThemeButton";
+import ErrorPopup from "../Components/ErrorPopup";
+import handleError from "../functions/handleError";
 
-export default function Home() {
+export default function Root() {
     const [shortenedUrl, setShortenedUrl] = useState<string>('');
+    const [isLoading, setIsLoading] = useState(false);
+    const [errMsg, setErrMsg] = useState('');
 
     function submitLink(e: any) {
         e.preventDefault();
         setShortenedUrl('');
+        setIsLoading(true);
         axios.post(process.env.REACT_APP_API_ENDPOINT + 'shortUrls', { fullUrl: e.target.fullUrl.value })
-            .then(response => setShortenedUrl(process.env.REACT_APP_API_ENDPOINT + response.data.short))
-            .catch(error => console.log(error))
-            .finally(() => e.target.fullUrl.value = '');
+            .then(response => {
+                setShortenedUrl(process.env.REACT_APP_API_ENDPOINT + response.data.short);
+                e.target.fullUrl.value = '';
+            })
+            .catch(error => {
+                handleError(error, (msg: string) => {
+                    setErrMsg(msg);
+                    setTimeout(() => {
+                        setErrMsg('');
+                    }, 5000);
+                })
+            }).finally(() => {
+                setIsLoading(false);
+        });
     }
 
     function copyLink(e: any) {
@@ -33,17 +49,26 @@ export default function Home() {
                 <meta property="og:type" content="web app" />
                 <meta property="og:description" content="Shorten your URLs with Slice" />
             </Helmet>
+            {errMsg && (
+                <ErrorPopup msg={errMsg} />
+            )}
             <div className="h-screen flex flex-col items-center px-6 text-gray-700 dark:text-gray-300">
                 <div className="max-w-2xl w-full h-screen py-20 flex flex-col justify-center">
                     <h1 className="sm:text-4xl text-3xl text-center font-extrabold tracking-tight text-black dark:text-white">Shorten your URL</h1>
                     <p className="mt-4 text-center max-w-lg text-lg mx-auto">Use Slice to transform long, ugly links into nice, memorable and trackable short URLs, which can be posted anywhere.</p>
                     <form onSubmit={submitLink} className="mt-7 grid min-[420px]:grid-cols-[auto_max-content] gap-x-2 gap-y-2.5 w-full">
-                        <input className="rounded border border-gray-300 bg-transparent py-3 px-4 outline-0 placeholder:text-gray-400 focus:border-indigo-600 dark:border-gray-700 dark:focus:border-indigo-400 dark:placeholder:text-gray-600" required={true} type="url" name="fullUrl" id="fullUrl" placeholder="Enter your URL"/>
-                        <button className="max-sm:justify-center flex items-center gap-2 rounded bg-indigo-600 text-white font-semibold py-3 px-4 hover:bg-indigo-700 focus:outline outline-2 outline-indigo-600 outline-offset-2 dark:bg-indigo-400 dark:text-black dark:outline-indigo-400" type="submit">
-                            <span>Shrink</span>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
-                            </svg>
+                        <input disabled={isLoading} className="disabled:bg-gray-100 disabled:text-gray-400 dark:disabled:bg-gray-800 dark:disabled-text-gray-600 rounded border border-gray-300 bg-transparent py-3 px-4 outline-0 placeholder:text-gray-400 focus:border-indigo-600 dark:border-gray-700 dark:focus:border-indigo-400 dark:placeholder:text-gray-600" required={true} type="url" name="fullUrl" id="fullUrl" placeholder="Enter your URL"/>
+                        <button disabled={isLoading} className="sm:w-28 flex items-center justify-center gap-2 rounded bg-indigo-600 text-white font-semibold py-3 focus:outline outline-2 outline-indigo-600 outline-offset-2 dark:bg-indigo-400 dark:text-black dark:outline-indigo-400" type="submit">
+                            {isLoading ? (
+                                <span>Working...</span>
+                            ):(
+                                <>
+                                    <span>Shrink</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
+                                    </svg>
+                                </>
+                            )}
                         </button>
                     </form>
                     {shortenedUrl && (
