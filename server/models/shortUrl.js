@@ -18,8 +18,7 @@ const shortUrlSchema = new mongoose.Schema({
     },
     createdOn: {
         type: String,
-        required: true,
-        default: new Date().toString()
+        required: true
     }
 });
 

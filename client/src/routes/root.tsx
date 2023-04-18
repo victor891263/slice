@@ -15,7 +15,7 @@ export default function Root() {
         e.preventDefault();
         setShortenedUrl('');
         setIsLoading(true);
-        axios.post(process.env.REACT_APP_API_ENDPOINT + 'shortUrls', { fullUrl: e.target.fullUrl.value })
+        axios.post(process.env.REACT_APP_API_ENDPOINT + 'shortUrls', { fullUrl: e.target.fullUrl.value, createdOn: new Date().toString() })
             .then(response => {
                 setShortenedUrl(process.env.REACT_APP_API_ENDPOINT + response.data.short);
                 e.target.fullUrl.value = '';
@@ -88,41 +88,3 @@ export default function Root() {
         </>
     );
 }
-
-
-
-/*
-
-
-
-<div className="text-gray-700 mx-auto max-w-3xl dark:text-gray-300">
-            <h1 className="sm:text-3xl text-2xl font-bold tracking-tight text-black dark:text-white">Slice</h1>
-            <form className="grid grid-cols-[auto_max-content] gap-2 w-full" action="" method="POST">
-                <input className="rounded border py-2 px-3" required={true} type="url" name="fullUrl" id="fullUrl" placeholder="Enter your url"/>
-                <button className="rounded bg-indigo-600 text-white font-semibold py-2 px-4" type="submit">Shrink</button>
-            </form>
-
-            <div className="overflow-x-auto rounded-lg border border-gray-200">
-                <table className="min-w-full divide-y-2 divide-gray-200 text-sm">
-                    <thead className="ltr:text-left rtl:text-right">
-                        <tr className="font-medium text-gray-900">
-                            <th className="whitespace-nowrap px-4 py-2">Full URL</th>
-                            <th className="whitespace-nowrap px-4 py-2">Short URL</th>
-                            <th className="whitespace-nowrap px-4 py-2">Clicks</th>
-                        </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-200">
-                        <tr className="font-medium text-gray-900">
-                            <td className="whitespace-nowrap px-4 py-2"><a href="https://github.com/victor891263">https://github.com/victor891263</a></td>
-                            <td className="whitespace-nowrap px-4 py-2"><a href="/123abc">/123abc</a></td>
-                            <td className="whitespace-nowrap px-4 py-2">17</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-
-
-
- */

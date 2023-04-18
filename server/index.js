@@ -17,6 +17,14 @@ process.on('unhandledRejection', (error, source) => {
 });
 
 
+process.on('SIGINT', () => {
+    mongoose.connection.close(() => {
+        console.log('MongoDB connection closed');
+        process.exit(0);
+    });
+});
+
+
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -47,7 +55,7 @@ app.get('/:shortUrl', async (req, res) => {
 
 
 app.post('/shortUrls', async (req, res) => {
-    const url = await ShortUrl.create({ full: req.body.fullUrl });
+    const url = await ShortUrl.create({ full: req.body.fullUrl, createdOn: req.body.createdOn });
     res.send(url);
 });
 
