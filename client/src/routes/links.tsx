@@ -78,7 +78,7 @@ export default function Links() {
                 <div className="max-w-screen-lg w-full py-16 my-auto">
                     <h1 className="sm:text-3xl text-2xl text-center font-extrabold tracking-tight text-black dark:text-white">All shortened URLs</h1>
                     <Link to="/" className="sm:mt-1.5 mt-1 block w-fit mx-auto text-indigo-600 dark:text-indigo-400">Get started</Link>
-                    <div className="sm:mb-9 mb-4 mt-8 relative max-w-sm mx-auto">
+                    <div className="sm:mb-10 mb-4 mt-8 relative max-w-sm mx-auto">
                         <input onChange={e => setSearchKeyword(e.target.value)} value={searchKeyword} type="text" name="search" placeholder="What's your URL?" className="w-full shadow-sm rounded bg-transparent border border-gray-300 py-2.5 px-3.5 outline-0 focus:border-indigo-600 dark:border-gray-700 dark:focus:border-indigo-400 dark:placeholder:text-gray-600" />
                         <div className="absolute top-0 right-0 pr-2.5 h-full flex items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-gray-400 dark:text-gray-600">

@@ -56,7 +56,7 @@ export default function Root() {
                 <div className="max-w-2xl w-full h-screen py-20 flex flex-col justify-center">
                     <h1 className="sm:text-4xl text-3xl text-center font-extrabold tracking-tight text-black dark:text-white">Shorten your URL</h1>
                     <p className="sm:mt-4 mt-3 text-center max-w-lg text-lg mx-auto">Use Slice to transform long, ugly links into nice, memorable and trackable short URLs, which can be posted anywhere.</p>
-                    <form onSubmit={submitLink} className="mt-6 grid min-[420px]:grid-cols-[auto_max-content] gap-2 w-full">
+                    <form onSubmit={submitLink} className="sm:mt-7 mt-6 grid min-[420px]:grid-cols-[auto_max-content] gap-2 w-full">
                         <input disabled={isLoading} className="disabled:bg-gray-100 disabled:text-gray-400 dark:disabled:bg-gray-800 dark:disabled-text-gray-600 shadow-sm rounded border border-gray-300 bg-transparent py-3 px-4 outline-0 placeholder:text-gray-400 focus:border-indigo-600 dark:border-gray-700 dark:focus:border-indigo-400 dark:placeholder:text-gray-600" required={true} type="url" name="fullUrl" id="fullUrl" placeholder="Enter your URL"/>
                         <button disabled={isLoading} className="sm:w-28 flex items-center justify-center gap-2 rounded bg-indigo-600 text-white font-semibold py-3 focus:outline outline-2 outline-indigo-600 outline-offset-2 dark:bg-indigo-400 dark:text-black dark:outline-indigo-400" type="submit">
                             {isLoading ? (
