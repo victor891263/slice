@@ -78,8 +78,8 @@ export default function Links() {
                 <div className="max-w-screen-lg w-full py-16 my-auto">
                     <h1 className="sm:text-3xl text-2xl text-center font-extrabold tracking-tight text-black dark:text-white">All shortened URLs</h1>
                     <Link to="/" className="sm:mt-1.5 mt-1 block w-fit mx-auto text-indigo-600 dark:text-indigo-400">Get started</Link>
-                    <div className="sm:mb-9 mb-3 mt-8 relative max-w-sm mx-auto">
-                        <input onChange={e => setSearchKeyword(e.target.value)} value={searchKeyword} type="text" name="search" placeholder="What's your URL?" className="w-full shadow-sm rounded bg-transparent border border-gray-300 py-2 px-3 outline-0 focus:border-indigo-600 dark:border-gray-700 dark:focus:border-indigo-400 dark:placeholder:text-gray-600" />
+                    <div className="sm:mb-9 mb-4 mt-8 relative max-w-sm mx-auto">
+                        <input onChange={e => setSearchKeyword(e.target.value)} value={searchKeyword} type="text" name="search" placeholder="What's your URL?" className="w-full shadow-sm rounded bg-transparent border border-gray-300 py-2.5 px-3.5 outline-0 focus:border-indigo-600 dark:border-gray-700 dark:focus:border-indigo-400 dark:placeholder:text-gray-600" />
                         <div className="absolute top-0 right-0 pr-2.5 h-full flex items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-gray-400 dark:text-gray-600">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
@@ -103,16 +103,16 @@ export default function Links() {
                                     <table className="min-w-full divide-y divide-gray-300 dark:divide-gray-700">
                                         <thead className="bg-gray-100 dark:bg-gray-800">
                                         <tr className="text-gray-500 text-sm">
-                                            <th className="whitespace-nowrap px-3 py-2.5 font-normal text-left">Full URL</th>
-                                            <th className="whitespace-nowrap px-3 py-2.5 font-normal text-left">Short URL</th>
-                                            <th className="whitespace-nowrap px-3 py-2.5 font-normal text-left">
+                                            <th className="whitespace-nowrap px-3.5 py-3 font-normal text-left">Full URL</th>
+                                            <th className="whitespace-nowrap px-3.5 py-3 font-normal text-left">Short URL</th>
+                                            <th className="whitespace-nowrap px-3.5 py-3 font-normal text-left">
                                                 <div className="flex items-center">
                                                     <span className="mr-0.5">Clicks</span>
                                                     <button onClick={() => setSortBy({ title: 'clicks', asc: true })}><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={"w-4 h-4" + ((sortBy.title === 'clicks' && sortBy.asc) ? " text-indigo-600 dark:text-indigo-400" : "")}><path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m0 0l6.75-6.75M12 19.5l-6.75-6.75" /></svg></button>
                                                     <button onClick={() => setSortBy({ title: 'clicks', asc: false })}><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={"w-4 h-4" + ((sortBy.title === 'clicks' && !sortBy.asc) ? " text-indigo-600 dark:text-indigo-400" : "")}><path strokeLinecap="round" strokeLinejoin="round" d="M12 19.5v-15m0 0l-6.75 6.75M12 4.5l6.75 6.75" /></svg></button>
                                                 </div>
                                             </th>
-                                            <th className="whitespace-nowrap px-3 py-2.5 font-normal text-left">
+                                            <th className="whitespace-nowrap px-3.5 py-3 font-normal text-left">
                                                 <div className="flex items-center">
                                                     <span className="mr-0.5">Created</span>
                                                     <button onClick={() => setSortBy({ title: 'createdOn', asc: true })}><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={"w-4 h-4" + ((sortBy.title === 'createdOn' && sortBy.asc) ? " text-indigo-600 dark:text-indigo-400" : "")}><path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m0 0l6.75-6.75M12 19.5l-6.75-6.75" /></svg></button>
@@ -124,14 +124,14 @@ export default function Links() {
                                         <tbody className="divide-y divide-gray-300 dark:divide-gray-700">
                                         {sortedUrls.map((url, index) => (
                                             <tr className="" key={index}>
-                                                <td className="whitespace-nowrap px-3 py-2.5 text-indigo-600 dark:text-indigo-400">
+                                                <td className="whitespace-nowrap px-3.5 py-3 text-indigo-600 dark:text-indigo-400">
                                                     <a href={url.full} target="_blank" rel="noreferrer">{url.full.length > 40 ? (url.full.slice(0, 40) + '...') : url.full}</a>
                                                 </td>
-                                                <td className="whitespace-nowrap px-3 py-2.5 text-indigo-600 dark:text-indigo-400">
+                                                <td className="whitespace-nowrap px-3.5 py-3 text-indigo-600 dark:text-indigo-400">
                                                     <a href={process.env.REACT_APP_API_ENDPOINT + url.short} target="_blank" rel="noreferrer">{process.env.REACT_APP_API_ENDPOINT + url.short}</a>
                                                 </td>
-                                                <td className="whitespace-nowrap px-3 py-2.5 font-bold">{url.clicks}</td>
-                                                <td className="whitespace-nowrap px-3 py-2.5">{setTimeLabel(url.createdOn)} ago</td>
+                                                <td className="whitespace-nowrap px-3.5 py-3 font-bold">{url.clicks}</td>
+                                                <td className="whitespace-nowrap px-3.5 py-3">{setTimeLabel(url.createdOn)} ago</td>
                                             </tr>
                                         ))}
                                         </tbody>
